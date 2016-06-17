@@ -8,6 +8,7 @@ var AWS = (function() {
       secretKey = secret_key;
     },
     /**
+     * Authenticates and sends the given parameters for an AWS api request.
      * @param service the aws service to connect to (e.g. 'ec2', 'iam', 'codecommit')
      * @param region the aws region your command will go to (e.g. 'us-east-1')
      * @param action the api action to call
