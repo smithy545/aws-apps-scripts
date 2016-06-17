@@ -22,6 +22,7 @@ var AWS = (function() {
       var method = method || "GET";
       var uri = uri || "/";
       var host = service+"."+region+".amazonaws.com";
+      var headers = headers || {};
       var request;
       var query;
       if(method.toLowerCase() == "post") {
