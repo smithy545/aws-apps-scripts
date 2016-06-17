@@ -16,6 +16,7 @@ var AWS = (function() {
      * @param payload the payload to send. Defults to ''.
      * @param headers the headers to attach to the request. Host and X-Amz-Date are premade for you.
      * @param uri the path after the domain before the action. Defaults to '/'.
+     * @return the server response to the request
      */
     request: function(service, region, action, params, method, payload, headers, uri) {
       var window = {};
