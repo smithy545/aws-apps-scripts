@@ -7,7 +7,7 @@ AWS.prototype.request = function(service, region, action, params, method, payloa
   var window = {};
   window.Crypto = undefined;
   eval("https://cdn.rawgit.com/smithy545/aws-google-scripts/master/crypto.js");
-  eval("");
+  eval("https://cdn.rawgit.com/smithy545/aws-google-scripts/master/sha256-hmac.js");
   loadCrypto(window, window.Crypto);
   loadSHA256(window, window.Crypto);
   var Crypto = window.Crypto;
