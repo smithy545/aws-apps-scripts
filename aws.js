@@ -5,8 +5,8 @@ var AWS = (function() {
   return {
     /**
      * Sets up keys for authentication so you can make your requests. Keys are not gettable once added.
-     * @param access_key your aws access key
-     * @param secret_key your aws secret key
+     * @param {string} access_key your aws access key
+     * @param {string} secret_key your aws secret key
      */
     init: function AWS(access_key, secret_key) {
       accessKey = access_key;
@@ -14,15 +14,15 @@ var AWS = (function() {
     },
     /**
      * Authenticates and sends the given parameters for an AWS api request.
-     * @param service the aws service to connect to (e.g. 'ec2', 'iam', 'codecommit')
-     * @param region the aws region your command will go to (e.g. 'us-east-1')
-     * @param action the api action to call
-     * @param params the parameters to call on the action. Defaults to none.
-     * @param method the http method (e.g. 'GET', 'POST'). Defaults to GET.
-     * @param payload the payload to send. Defults to ''.
-     * @param headers the headers to attach to the request. Host and X-Amz-Date are premade for you.
-     * @param uri the path after the domain before the action. Defaults to '/'.
-     * @return the server response to the request
+     * @param {string} service the aws service to connect to (e.g. 'ec2', 'iam', 'codecommit')
+     * @param {string} region the aws region your command will go to (e.g. 'us-east-1')
+     * @param {string} action the api action to call
+     * @param {Object} params the parameters to call on the action. Defaults to none.
+     * @param {string} method the http method (e.g. 'GET', 'POST'). Defaults to GET.
+     * @param {string} payload the payload to send. Defults to ''.
+     * @param {Object} headers the headers to attach to the request. Host and X-Amz-Date are premade for you.
+     * @param {string} uri the path after the domain before the action. Defaults to '/'.
+     * @return {string} the server response to the request
      */
     request: function(service, region, action, params, method, payload, headers, uri) {
       var window = {};
