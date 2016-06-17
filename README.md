@@ -13,7 +13,7 @@ How to use:
 
 Command usage:
 ```
-AWS.request(service, region, action, params={}, method="GET", payload='', headers={"Host":"GeneratedHost", "X-Amz-Date":"GeneratedX-Amz-Date"}, uri='/')
+AWS.request(service, region, action, params={}, method='GET', payload='', headers={"Host":"GeneratedHost", "X-Amz-Date":"GeneratedX-Amz-Date"}, uri='/')
 ```
 
 Example:
