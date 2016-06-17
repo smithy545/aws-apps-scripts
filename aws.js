@@ -25,6 +25,14 @@ var AWS = (function() {
      * @return {string} the server response to the request
      */
     request: function(service, region, action, params, method, payload, headers, uri) {
+      if(service == undefined) {
+        throw "Error: Service undefined";
+      } else if(region == undefined) {
+        throw "Error: Region undefined";
+      } else if(action == undefined) {
+        throw "Error: Action undefined";
+      }
+      
       var window = {};
       window.Crypto = undefined;
       loadCrypto(window, window.Crypto);
