@@ -6,7 +6,7 @@ function AWS(access_key, secret_key) {
 AWS.prototype.request = function(service, region, action, params, method, payload, headers, uri) {
   var window = {};
   window.Crypto = undefined;
-  eval("");
+  eval("https://cdn.rawgit.com/smithy545/aws-google-scripts/master/crypto.js");
   eval("");
   loadCrypto(window, window.Crypto);
   loadSHA256(window, window.Crypto);
