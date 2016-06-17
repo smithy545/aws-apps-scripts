@@ -99,6 +99,11 @@ var AWS = (function() {
       var response = UrlFetchApp.fetch(request, options);
       return response;
     },
+    /**
+     * Sets new authorization keys
+     * @param access_key {string} the new access_key
+     * @param secret_key {string} the new secret key
+     */
     setNewKey: function(access_key, secret_key) {
       accessKey = access_key;
       secretKey = secret_key;
