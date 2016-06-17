@@ -7,6 +7,16 @@ var AWS = (function() {
       accessKey = access_key;
       secretKey = secret_key;
     },
+    /**
+     * @param service the aws service to connect to (e.g. 'ec2', 'iam', 'codecommit')
+     * @param region the aws region your command will go to (e.g. 'us-east-1')
+     * @param action the api action to call
+     * @param params the parameters to call on the action. Defaults to none.
+     * @param method the http method (e.g. 'GET', 'POST'). Defaults to GET.
+     * @param payload the payload to send. Defults to ''.
+     * @param headers the headers to attach to the request. Host and X-Amz-Date are premade for you.
+     * @param uri the path after the domain before the action. Defaults to '/'.
+     */
     request: function(service, region, action, params, method, payload, headers, uri) {
       var window = {};
       window.Crypto = undefined;
