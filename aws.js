@@ -1,4 +1,5 @@
 var AWS = (function() {
+  // Keys cannot be retrieved once initialized but can be changed
   var accessKey;
   var secretKey;
   
