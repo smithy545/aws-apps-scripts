@@ -1,5 +1,5 @@
-# aws-google-scripts
-An interface to authenticate AWS api requests from within google scripts.
+# aws-apps-scripts
+An interface to authenticate AWS api requests from within google apps scripts.
 
 How to use:
 
