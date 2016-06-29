@@ -20,7 +20,7 @@ var AWS = (function() {
      * @param {string} action the api action to call
      * @param {Object} params the parameters to call on the action. Defaults to none.
      * @param {string} method the http method (e.g. 'GET', 'POST'). Defaults to GET.
-     * @param {string} payload the payload to send. Defults to ''.
+     * @param {(string|object)} payload the payload to send. Defults to ''.
      * @param {Object} headers the headers to attach to the request. Host and X-Amz-Date are premade for you.
      * @param {string} uri the path after the domain before the action. Defaults to '/'.
      * @return {string} response the server response to the request
@@ -32,6 +32,10 @@ var AWS = (function() {
         throw "Error: Region undefined";
       } else if(action == undefined) {
         throw "Error: Action undefined";
+      }
+      
+      if(typeof payload !== "string") {
+        payload = JSON.stringify(payload);
       }
       
       var window = {};
