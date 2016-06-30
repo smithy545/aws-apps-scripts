@@ -5,7 +5,7 @@ How to use:
 
 1. Create a new project in google scripts.
 
-2. Copy paste crypto.js, sha256-hmac.js, and aws.js each into their own file and save them.
+2. Copy paste sha256-hmac.js, and aws.js each into their own file and save them.
 
 3. Open up a new a file and setup the AWS variable with AWS.init.
 
