@@ -1,9 +1,3 @@
-/*
-* Crypto-JS v2.5.3
-* http://code.google.com/p/crypto-js/
-* (c) 2009-2012 by Jeff Mott. All rights reserved.
-* http://code.google.com/p/crypto-js/wiki/License
-*/
 function loadSHA256(window, Crypto) {
 /*
  * Crypto-JS v2.5.3
