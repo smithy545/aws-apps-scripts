@@ -39,9 +39,7 @@ var AWS = (function() {
       }
       
       var window = {};
-      window.Crypto = undefined;
-      loadCrypto(window, window.Crypto);
-      loadSHA256(window, window.Crypto);
+      loadSHA256(window);
       var Crypto = window.Crypto;
       
       var d = new Date();
@@ -155,7 +153,7 @@ var AWS = (function() {
   }
   
   function getSignatureKey(Crypto, key, dateStamp, regionName, serviceName) {
-    var kDate= Crypto.HMAC(Crypto.SHA256, dateStamp, "AWS4" + key, { asBytes: true})
+    var kDate= Crypto.HMAC(Crypto.SHA256, dateStamp, "AWS4" + key, { asBytes: true});
     var kRegion= Crypto.HMAC(Crypto.SHA256, regionName, kDate, { asBytes: true });
     var kService=Crypto.HMAC(Crypto.SHA256, serviceName, kRegion, { asBytes: true });
     var kSigning= Crypto.HMAC(Crypto.SHA256, "aws4_request", kService, { asBytes: true });
