@@ -141,21 +141,18 @@ var AWS = (function() {
   };
   
   function getCanonQuery(r) {
-    var index = r.indexOf('?');
-    if(index == -1) {
-      return '';
-    }
-    var query = r.substring(index+1).split("&").sort().join("&");
+    var query = r.split("&").sort().join("&");
     
     var canon = "";
-    for(var element in Object.keys(query).sort()) {
+    for(var i = 0; i < query.length; i++) {
+      var element = query.charAt(i);
       if(isCanon(element)) {
         canon += element;
       } else {
         canon += "%"+element.charCodeAt(0).toString(16)
       }
     }
-    
+
     return canon;
   }
   
