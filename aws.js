@@ -145,7 +145,7 @@ var AWS = (function() {
     if(index == -1) {
       return '';
     }
-    var query = r.substring(index+1).split("");
+    var query = r.substring(index+1).split("&").sort().join("&");
     
     var canon = "";
     for(var element in Object.keys(query).sort()) {
