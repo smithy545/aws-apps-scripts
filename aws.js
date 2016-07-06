@@ -6,8 +6,8 @@ var AWS = (function() {
   return {
     /**
      * Sets up keys for authentication so you can make your requests. Keys are not gettable once added.
-     * @param {string} access_key your aws access key
-     * @param {string} secret_key your aws secret key
+     * @param {string} access_key - your aws access key
+     * @param {string} secret_key - your aws secret key
      */
      init: function AWS(access_key, secret_key) {
       accessKey = access_key;
