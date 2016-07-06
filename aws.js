@@ -15,15 +15,15 @@ var AWS = (function() {
     },
     /**
      * Authenticates and sends the given parameters for an AWS api request.
-     * @param {string} service the aws service to connect to (e.g. 'ec2', 'iam', 'codecommit')
-     * @param {string} region the aws region your command will go to (e.g. 'us-east-1')
-     * @param {string} action the api action to call
-     * @param {Object} params the parameters to call on the action. Defaults to none.
-     * @param {string} method the http method (e.g. 'GET', 'POST'). Defaults to GET.
-     * @param {(string|object)} payload the payload to send. Defults to ''.
-     * @param {Object} headers the headers to attach to the request. Host and X-Amz-Date are premade for you.
-     * @param {string} uri the path after the domain before the action. Defaults to '/'.
-     * @return {string} response the server response to the request
+     * @param {string} service - the aws service to connect to (e.g. 'ec2', 'iam', 'codecommit')
+     * @param {string} region - the aws region your command will go to (e.g. 'us-east-1')
+     * @param {string} action - the api action to call
+     * @param {Object} [params] - the parameters to call on the action. Defaults to none.
+     * @param {string} [method=GET] - the http method (e.g. 'GET', 'POST'). Defaults to GET.
+     * @param {(string|object)} [payload={}] - the payload to send. Defults to ''.
+     * @param {Object} [headers={Host:..., X-Amz-Date:...}] - the headers to attach to the request. Host and X-Amz-Date are premade for you.
+     * @param {string} [uri='/'] - the path after the domain before the action. Defaults to '/'.
+     * @return {string} response - the server response to the request
      */
      request: function(service, region, action, params, method, payload, headers, uri) {
       if(service == undefined) {
@@ -110,8 +110,8 @@ var AWS = (function() {
     },
     /**
      * Sets new authorization keys
-     * @param access_key {string} the new access_key
-     * @param secret_key {string} the new secret key
+     * @param {string} access_key - the new access_key
+     * @param {string} secret_key - the new secret key
      */
      setNewKey: function(access_key, secret_key) {
       accessKey = access_key;
