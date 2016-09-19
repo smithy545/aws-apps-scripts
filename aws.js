@@ -147,6 +147,9 @@ var AWS = (function() {
     return String(s);
   }
   
+  /**
+   * Source: http://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-jscript
+   */
   function getSignatureKey(Crypto, key, dateStamp, regionName, serviceName) {
     var kDate= Crypto.HMAC(Crypto.SHA256, dateStamp, "AWS4" + key, { asBytes: true});
     var kRegion= Crypto.HMAC(Crypto.SHA256, regionName, kDate, { asBytes: true });
