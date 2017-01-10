@@ -69,7 +69,7 @@ var AWS = (function() {
       var signedHeaders = "";
       headers["Host"] = host;
       headers["X-Amz-Date"] = dateStringFull;
-      Object.keys(headers).sort(function(a,b){if(a < b) return -1;if(a > b) return 1;return 0;}).forEach(function(h, index, ordered) {
+      Object.keys(headers).sort(function(a,b){return a-b;}).forEach(function(h, index, ordered) {
         canonHeaders += h.toLowerCase() + ":" + headers[h] + "\n";
         signedHeaders += h.toLowerCase() + ";";
       });
