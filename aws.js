@@ -10,11 +10,11 @@ var AWS = (function() {
      * @param {string} secret_key - your aws secret key
      */
      init: function AWS(access_key, secret_key) {
-       if(access_key == undefined) {
-         throw "Error: No access key provided";
-       } else if(secret_key == undefined) {
-         throw "Error: No secret key provided";
-       }
+      if(access_key == undefined) {
+       throw "Error: No access key provided";
+      } else if(secret_key == undefined) {
+       throw "Error: No secret key provided";
+      }
       accessKey = access_key;
       secretKey = secret_key;
     },
@@ -119,7 +119,7 @@ var AWS = (function() {
      * @param {string} secret_key - the new secret key
      */
      setNewKey: function(access_key, secret_key) {
-       if(access_key == undefined) {
+      if(access_key == undefined) {
         throw "Error: No access key provided";
       } else if(secret_key == undefined) {
         throw "Error: No secret key provided";
