@@ -11,9 +11,9 @@ var AWS = (function() {
      */
      init: function AWS(access_key, secret_key) {
       if(access_key == undefined) {
-       throw "Error: No access key provided";
+        throw "Error: No access key provided";
       } else if(secret_key == undefined) {
-       throw "Error: No secret key provided";
+        throw "Error: No secret key provided";
       }
       accessKey = access_key;
       secretKey = secret_key;
