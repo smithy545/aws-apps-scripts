@@ -39,7 +39,9 @@ var AWS = (function() {
         throw "Error: Action undefined";
       }
       
-      if(typeof payload !== "string") {
+      if(payload == undefined) {
+        payload = "";
+      } else if(typeof payload !== "string") {
         payload = JSON.stringify(payload);
       }
       
