@@ -48,9 +48,9 @@ var AWS = (function() {
       var Crypto = loadCrypto();
       
       var d = new Date();
-      var dateStringFull =  String(d.getFullYear()) + addZero(d.getMonth()+1) + addZero(d.getDate()) + "T" + addZero(d.getUTCHours()) + addZero(d.getUTCMinutes()) + addZero(d.getUTCSeconds()) + 'Z';
-      var dateStringShort = String(d.getFullYear()) + addZero(d.getMonth()+1) + addZero(d.getDate());
       
+      var dateStringFull =  String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate()) + "T" + addZero(d.getUTCHours()) + addZero(d.getUTCMinutes()) + addZero(d.getUTCSeconds()) + 'Z';
+      var dateStringShort = String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate());
       var payload = payload || '';
       var method = method || "GET";
       var uri = uri || "/";
