@@ -65,7 +65,7 @@ var AWS = (function() {
         query = "Action="+action;
         if(params) {
           Object.keys(params).sort(function(a,b) { return a<b?-1:1; }).forEach(function(name) {
-              query += "&"+name+"="+encodeURIComponent(params[name]);
+            query += "&"+name+"="+encodeURIComponent(params[name]);
           });
         }
         request = "https://"+host+uri+"?"+query;
