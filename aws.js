@@ -64,9 +64,9 @@ var AWS = (function() {
       } else {
         query = "Action="+action;
         if(params) {
-          for(var name in params) {
-            query += "&"+name+"="+params[name];
-          }
+          Object.keys(params).sort(function(a,b) { return a<b?-1:1; }).forEach(function(name) {
+              query += "&"+name+"="+encodeURIComponent(params[name]);
+          });
         }
         request = "https://"+host+uri+"?"+query;
       }
@@ -76,7 +76,7 @@ var AWS = (function() {
       var signedHeaders = "";
       headers["Host"] = host;
       headers["X-Amz-Date"] = dateStringFull;
-      Object.keys(headers).sort(function(a,b){return a-b;}).forEach(function(h, index, ordered) {
+      Object.keys(headers).sort(function(a,b){return a<b?-1:1;}).forEach(function(h, index, ordered) {
         canonHeaders += h.toLowerCase() + ":" + headers[h] + "\n";
         signedHeaders += h.toLowerCase() + ";";
       });
