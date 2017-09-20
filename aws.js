@@ -2,7 +2,7 @@ var AWS = (function() {
   // Keys cannot be retrieved once initialized but can be changed
   var accessKey;
   var secretKey;
-  
+
   return {
     /**
      * Sets up keys for authentication so you can make your requests. Keys are not gettable once added.
@@ -38,17 +38,17 @@ var AWS = (function() {
       } else if(action == undefined) {
         throw "Error: Action undefined";
       }
-      
+
       if(payload == undefined) {
         payload = "";
       } else if(typeof payload !== "string") {
         payload = JSON.stringify(payload);
       }
-      
+
       var Crypto = loadCrypto();
-      
+
       var d = new Date();
-      
+
       var dateStringFull =  String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate()) + "T" + addZero(d.getUTCHours()) + addZero(d.getUTCMinutes()) + addZero(d.getUTCSeconds()) + 'Z';
       var dateStringShort = String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate());
       var payload = payload || '';
@@ -70,7 +70,7 @@ var AWS = (function() {
         }
         request = "https://"+host+uri+"?"+query;
       }
-      
+
       var canonQuery = getCanonQuery(query);
       var canonHeaders = "";
       var signedHeaders = "";
@@ -81,7 +81,7 @@ var AWS = (function() {
         signedHeaders += h.toLowerCase() + ";";
       });
       signedHeaders = signedHeaders.substring(0, signedHeaders.length-1);
-      
+
       var CanonicalString = method+'\n'
       + uri+'\n'
       + query+'\n'
@@ -89,20 +89,20 @@ var AWS = (function() {
       + signedHeaders+'\n'
       + Crypto.SHA256(payload);
       var canonHash = Crypto.SHA256(CanonicalString);
-      
+
       var algorithm = "AWS4-HMAC-SHA256";
       var scope = dateStringShort + "/"+region+"/"+service+"/aws4_request";
-      
+
       var StringToSign = algorithm+'\n'
       + dateStringFull+'\n'
       + scope+'\n'
       + canonHash;
-      
+
       var key = getSignatureKey(Crypto, secretKey, dateStringShort, region, service);
       var signature = Crypto.HMAC(Crypto.SHA256, StringToSign, key, { asBytes: false });
-      
+
       var authHeader = algorithm +" Credential="+accessKey+"/"+scope+", SignedHeaders="+signedHeaders+", Signature="+signature;
-      
+
       headers["Authorization"] = authHeader;
       delete headers["Host"];
       var options = {
@@ -111,7 +111,7 @@ var AWS = (function() {
         muteHttpExceptions: true,
         payload: payload,
       };
-      
+
       var response = UrlFetchApp.fetch(request, options);
       return response;
     },
@@ -130,10 +130,10 @@ var AWS = (function() {
       secretKey = secret_key;
     }
   };
-  
+
   function getCanonQuery(r) {
     var query = r.split("&").sort().join("&");
-    
+
     var canon = "";
     for(var i = 0; i < query.length; i++) {
       var element = query.charAt(i);
@@ -146,19 +146,19 @@ var AWS = (function() {
 
     return canon;
   }
-  
+
   // For characters only
   function isCanon(c) {
     return /[a-z0-9-_.~=&]/i.test(c);
   }
-  
+
   function addZero(s) {
     if(Number(s) < 10) {
       return '0' + String(s);
     }
     return String(s);
   }
-  
+
   /**
    * Source: http://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-jscript
    */
@@ -167,10 +167,10 @@ var AWS = (function() {
     var kRegion= Crypto.HMAC(Crypto.SHA256, regionName, kDate, { asBytes: true });
     var kService=Crypto.HMAC(Crypto.SHA256, serviceName, kRegion, { asBytes: true });
     var kSigning= Crypto.HMAC(Crypto.SHA256, "aws4_request", kService, { asBytes: true });
-    
+
     return kSigning;
   }
-  
+
   function loadCrypto() {
       var window = {};
       var Crypto = undefined;
