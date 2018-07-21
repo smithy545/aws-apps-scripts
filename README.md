@@ -11,7 +11,7 @@ How to use:
 
 4. Use AWS.request with whatever AWS API request you need! Make sure the headers and parameters are correctly set up, though. This function only sets up the Host, X-Amz-Date, X-Amz-Target, and Authorization headers by default.
 
-Note: X-Amz-Target is not always necessary and (as far as I know) only used in POST requests and is set to the "action" parameter provided by default.
+Note: X-Amz-Target is (as far as I know) only used in POST requests and it is set to the "action" parameter provided by default.
 
 Command usage:
 ```
