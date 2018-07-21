@@ -15,7 +15,7 @@ Note: X-Amz-Target is (as far as I know) only used in POST requests and is set t
 
 Command usage:
 ```
-AWS.request(service, region, action, params={}, method='GET', payload='', headers={"Host":"GeneratedHost", "X-Amz-Date":"GeneratedX-Amz-Date", "X-Amz-Target":"ProvidedActionParameter"}, uri='/')
+AWS.request(service, region, action, params={}, method='GET', payload='', headers={"Host": GeneratedHost, "X-Amz-Date": GeneratedX-Amz-Date, "X-Amz-Target": action}, uri='/')
 ```
 
 Example:
