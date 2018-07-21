@@ -9,11 +9,13 @@ How to use:
 
 3. Open up a new a file and setup the AWS variable with AWS.init.
 
-4. Use AWS.request with whatever AWS API request you need! Make sure the headers and parameters are correctly set up, though. This function only sets up the Host, X-Amz-Date, and Authorization headers by default.
+4. Use AWS.request with whatever AWS API request you need! Make sure the headers and parameters are correctly set up, though. This function only sets up the Host, X-Amz-Date, X-Amz-Target, and Authorization headers by default.
+
+Note: X-Amz-Target is (as far as I know) only used in POST requests and is set to the "action" parameter provided by default.
 
 Command usage:
 ```
-AWS.request(service, region, action, params={}, method='GET', payload='', headers={"Host":"GeneratedHost", "X-Amz-Date":"GeneratedX-Amz-Date"}, uri='/')
+AWS.request(service, region, action, params={}, method='GET', payload='', headers={"Host":"GeneratedHost", "X-Amz-Date":"GeneratedX-Amz-Date", "X-Amz-Target":"ProvidedActionParameter"}, uri='/')
 ```
 
 Example:
