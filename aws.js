@@ -65,7 +65,7 @@ var AWS = (function() {
         query = "Action="+action;
         if(params) {
           Object.keys(params).sort(function(a,b) { return a<b?-1:1; }).forEach(function(name) {
-            query += "&"+name+"="+encodeURIComponent(params[name]);
+            query += "&"+name+"="+fixedEncodeURIComponent(params[name]);
           });
         }
         request = "https://"+host+uri+"?"+query;
@@ -196,4 +196,18 @@ var AWS = (function() {
 
       return window.Crypto;
   }
+
+    /**
+     * Strictly adhere to RFC3986 for URI encoding
+     *
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+     *
+     * @param str
+     * @returns {string}
+     */
+    function fixedEncodeURIComponent(str) {
+        return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
+            return '%' + c.charCodeAt(0).toString(16);
+        });
+    }
 })();
