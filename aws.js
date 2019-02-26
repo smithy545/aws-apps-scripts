@@ -165,10 +165,7 @@ var AWS = (function() {
   }
   
   function addZero(s) {
-    if(Number(s) < 10) {
-      return '0' + String(s);
-    }
-    return String(s);
+    return (Number(s) < 10 ? '0' : '') + String(s);
   }
   
   /**
