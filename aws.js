@@ -12,7 +12,7 @@ var AWS = (function() {
      * @param {string} access_key - your aws access key
      * @param {string} secret_key - your aws secret key
      */
-     init: function AWS(access_key, secret_key) {
+    init: function AWS(access_key, secret_key) {
       if(access_key == undefined) {
         throw "Error: No access key provided";
       } else if(secret_key == undefined) {
@@ -34,7 +34,7 @@ var AWS = (function() {
      * @param {Object} [options] - additional service specific values
      * @return {string} the server response to the request
      */
-     request: function(service, region, action, params, method, payload, headers, uri, options) {
+    request: function(service, region, action, params, method, payload, headers, uri, options) {
       if(service == undefined) {
         throw "Error: Service undefined";
       } else if(region == undefined) {
@@ -132,7 +132,7 @@ var AWS = (function() {
      * @param {string} access_key - the new access_key
      * @param {string} secret_key - the new secret key
      */
-     setNewKey: function(access_key, secret_key) {
+    setNewKey: function(access_key, secret_key) {
       if(access_key == undefined) {
         throw "Error: No access key provided";
       } else if(secret_key == undefined) {
