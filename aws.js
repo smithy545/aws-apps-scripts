@@ -1,6 +1,6 @@
 var AWS = (function() {
   // option constants
-  var BUCKET_NAME = "Bucket";
+  var PARAM_BUCKET_NAME = "Bucket";
   
   // Keys cannot be retrieved once initialized but can be changed
   var accessKey;
