@@ -1,4 +1,7 @@
 var AWS = (function() {
+  // option constants
+  var BUCKET_NAME = "Bucket";
+  
   // Keys cannot be retrieved once initialized but can be changed
   var accessKey;
   var secretKey;
@@ -28,15 +31,21 @@ var AWS = (function() {
      * @param {(string|object)} [payload={}] - the payload to send. Defults to ''.
      * @param {Object} [headers={Host:..., X-Amz-Date:...}] - the headers to attach to the request. Host and X-Amz-Date are premade for you.
      * @param {string} [uri='/'] - the path after the domain before the action. Defaults to '/'.
+     * @param {Object} [options] - additional service specific values
      * @return {string} the server response to the request
      */
-     request: function(service, region, action, params, method, payload, headers, uri) {
+     request: function(service, region, action, params, method, payload, headers, uri, options) {
       if(service == undefined) {
         throw "Error: Service undefined";
       } else if(region == undefined) {
         throw "Error: Region undefined";
       } else if(action == undefined) {
         throw "Error: Action undefined";
+      }
+      
+      var options = options || {};
+      if (service == "s3" && options[PARAM_BUCKET_NAME] == undefined) {
+        throw "Error: S3 Bucket undefined";
       }
       
       if(payload == undefined) {
@@ -52,9 +61,10 @@ var AWS = (function() {
       var dateStringFull =  String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate()) + "T" + addZero(d.getUTCHours()) + addZero(d.getUTCMinutes()) + addZero(d.getUTCSeconds()) + 'Z';
       var dateStringShort = String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate());
       var payload = payload || '';
+      var hashedPayload = Crypto.SHA256(payload);
       var method = method || "GET";
       var uri = uri || "/";
-      var host = service+"."+region+".amazonaws.com";
+      var host = (service == "s3" ? options[PARAM_BUCKET_NAME]+".s3" : service+"."+region)+".amazonaws.com";
       var headers = headers || {};
       var request;
       var query;
@@ -77,6 +87,7 @@ var AWS = (function() {
       headers["Host"] = host;
       headers["X-Amz-Date"] = dateStringFull;
       headers["X-Amz-Target"] = action;
+      headers["X-Amz-Content-SHA256"] = hashedPayload;
       Object.keys(headers).sort(function(a,b){return a<b?-1:1;}).forEach(function(h, index, ordered) {
         canonHeaders += h.toLowerCase() + ":" + headers[h] + "\n";
         signedHeaders += h.toLowerCase() + ";";
@@ -88,7 +99,7 @@ var AWS = (function() {
       + query+'\n'
       + canonHeaders+'\n'
       + signedHeaders+'\n'
-      + Crypto.SHA256(payload);
+      + hashedPayload;
       var canonHash = Crypto.SHA256(CanonicalString);
       
       var algorithm = "AWS4-HMAC-SHA256";
