@@ -1,11 +1,11 @@
 var AWS = (function() {
   // option constants
   var PARAM_BUCKET_NAME = "Bucket";
-  
+
   // Keys cannot be retrieved once initialized but can be changed
   var accessKey;
   var secretKey;
-  
+
   return {
     /**
      * Sets up keys for authentication so you can make your requests. Keys are not gettable once added.
@@ -42,29 +42,30 @@ var AWS = (function() {
       } else if(action == undefined) {
         throw "Error: Action undefined";
       }
-      
+
       var options = options || {};
-      if (service == "s3" && options[PARAM_BUCKET_NAME] == undefined) {
+      var bucket = options[PARAM_BUCKET_NAME];
+      if (service == "s3" && action != "ListAllMyBuckets" && bucket == undefined) {
         throw "Error: S3 Bucket undefined";
       }
-      
+
       if(payload == undefined) {
         payload = "";
       } else if(typeof payload !== "string") {
         payload = JSON.stringify(payload);
       }
-      
+
       var Crypto = loadCrypto();
-      
+
       var d = new Date();
-      
+
       var dateStringFull =  String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate()) + "T" + addZero(d.getUTCHours()) + addZero(d.getUTCMinutes()) + addZero(d.getUTCSeconds()) + 'Z';
       var dateStringShort = String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate());
       var payload = payload || '';
       var hashedPayload = Crypto.SHA256(payload);
       var method = method || "GET";
       var uri = uri || "/";
-      var host = (service == "s3" ? options[PARAM_BUCKET_NAME]+".s3" : service+"."+region)+".amazonaws.com";
+      var host = getHost(service, region, bucket);
       var headers = headers || {};
       var request;
       var query;
@@ -80,7 +81,7 @@ var AWS = (function() {
         }
         request = "https://"+host+uri+"?"+query;
       }
-      
+
       var canonQuery = getCanonQuery(query);
       var canonHeaders = "";
       var signedHeaders = "";
@@ -93,7 +94,7 @@ var AWS = (function() {
         signedHeaders += h.toLowerCase() + ";";
       });
       signedHeaders = signedHeaders.substring(0, signedHeaders.length-1);
-      
+
       var CanonicalString = method+'\n'
       + uri+'\n'
       + query+'\n'
@@ -101,20 +102,20 @@ var AWS = (function() {
       + signedHeaders+'\n'
       + hashedPayload;
       var canonHash = Crypto.SHA256(CanonicalString);
-      
+
       var algorithm = "AWS4-HMAC-SHA256";
       var scope = dateStringShort + "/"+region+"/"+service+"/aws4_request";
-      
+
       var StringToSign = algorithm+'\n'
       + dateStringFull+'\n'
       + scope+'\n'
       + canonHash;
-      
+
       var key = getSignatureKey(Crypto, secretKey, dateStringShort, region, service);
       var signature = Crypto.HMAC(Crypto.SHA256, StringToSign, key, { asBytes: false });
-      
+
       var authHeader = algorithm +" Credential="+accessKey+"/"+scope+", SignedHeaders="+signedHeaders+", Signature="+signature;
-      
+
       headers["Authorization"] = authHeader;
       delete headers["Host"];
       var options = {
@@ -123,7 +124,7 @@ var AWS = (function() {
         muteHttpExceptions: true,
         payload: payload,
       };
-      
+
       var response = UrlFetchApp.fetch(request, options);
       return response;
     },
@@ -142,10 +143,20 @@ var AWS = (function() {
       secretKey = secret_key;
     }
   };
-  
+
+  function getHost(service, region, bucket) {
+    var is_s3 = (service == "s3");
+    return [
+      bucket,
+      service,
+      (is_s3 ? undefined : region),
+      "amazonaws.com"
+    ].filter(Boolean).join(".");
+  }
+
   function getCanonQuery(r) {
     var query = r.split("&").sort().join("&");
-    
+
     var canon = "";
     for(var i = 0; i < query.length; i++) {
       var element = query.charAt(i);
@@ -158,16 +169,16 @@ var AWS = (function() {
 
     return canon;
   }
-  
+
   // For characters only
   function isCanon(c) {
     return /[a-z0-9-_.~=&]/i.test(c);
   }
-  
+
   function addZero(s) {
     return (Number(s) < 10 ? '0' : '') + String(s);
   }
-  
+
   /**
    * Source: http://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-jscript
    */
@@ -176,10 +187,10 @@ var AWS = (function() {
     var kRegion= Crypto.HMAC(Crypto.SHA256, regionName, kDate, { asBytes: true });
     var kService=Crypto.HMAC(Crypto.SHA256, serviceName, kRegion, { asBytes: true });
     var kSigning= Crypto.HMAC(Crypto.SHA256, "aws4_request", kService, { asBytes: true });
-    
+
     return kSigning;
   }
-  
+
   function loadCrypto() {
     var window = {};
     var Crypto = undefined;
@@ -201,10 +212,10 @@ var AWS = (function() {
               (i&n^~i&o)+c[h]+(d[h]>>>0);j=u+j;s=o;o=n;n=i;i=r+l>>>0;r=m;m=g;g=f;f=l+j>>>0}a[0]+=f;a[1]+=g;a[2]+=m;a[3]+=r;a[4]+=i;a[5]+=n;a[6]+=o;a[7]+=s}return a};e._blocksize=16;e._digestsize=32})();
               (function(){var d=Crypto,k=d.util,g=d.charenc,b=g.UTF8,a=g.Binary;d.HMAC=function(c,e,d,g){e.constructor==String&&(e=b.stringToBytes(e));d.constructor==String&&(d=b.stringToBytes(d));d.length>c._blocksize*4&&(d=c(d,{asBytes:!0}));for(var f=d.slice(0),d=d.slice(0),q=0;q<c._blocksize*4;q++)f[q]^=92,d[q]^=54;c=c(f.concat(c(d.concat(e),{asBytes:!0})),{asBytes:!0});return g&&g.asBytes?c:g&&g.asString?a.bytesToString(c):k.bytesToHex(c)}})();
     // end sha256/CryptoJS
-    
+
     return window.Crypto;
   }
-  
+
   /**
    * Strictly adhere to RFC3986 for URI encoding
    *
