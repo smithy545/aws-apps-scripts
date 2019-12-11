@@ -49,27 +49,43 @@ var AWS = (function() {
         throw "Error: S3 Bucket undefined";
       }
 
-      if(payload == undefined) {
-        payload = "";
-      } else if(typeof payload !== "string") {
-        payload = JSON.stringify(payload);
-      }
-
       var Crypto = loadCrypto();
 
       var d = new Date();
 
       var dateStringFull =  String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate()) + "T" + addZero(d.getUTCHours()) + addZero(d.getUTCMinutes()) + addZero(d.getUTCSeconds()) + 'Z';
       var dateStringShort = String(d.getUTCFullYear()) + addZero(d.getUTCMonth()+1) + addZero(d.getUTCDate());
-      var payload = payload || '';
-      var hashedPayload = Crypto.SHA256(payload);
       var method = method || "GET";
       var uri = uri || "/";
       var host = getHost(service, region, bucket);
       var headers = headers || {};
       var request;
       var query;
+      var contentType = options.contentType || null;
+
       if(method.toLowerCase() == "post") {
+        if(payload == undefined) {
+          payload = "";
+        } else if(typeof payload !== "string") {
+          switch (contentType)
+          {
+            case 'application/x-www-form-urlencoded':
+              var payloadParts = [];
+
+              Object.keys(payload).sort(function(a,b) { return a<b?-1:1; }).forEach(function(name) {
+                payloadParts.push(name+"="+fixedEncodeURIComponent(payload[name]));
+              });
+
+              payload = "Action=" + action + "&" + payloadParts.join("&");
+              break;
+            case 'application/json':
+            default:
+              payload = JSON.stringify(payload);
+              contentType = 'application/json';
+              break;
+          }
+        }
+
         request = "https://"+host+uri;
         query = '';
       } else {
@@ -82,6 +98,8 @@ var AWS = (function() {
         request = "https://"+host+uri+"?"+query;
       }
 
+      var payload = payload || '';
+      var hashedPayload = Crypto.SHA256(payload);
       var canonQuery = getCanonQuery(query);
       var canonHeaders = "";
       var signedHeaders = "";
@@ -123,6 +141,7 @@ var AWS = (function() {
         headers: headers,
         muteHttpExceptions: true,
         payload: payload,
+        contentType: contentType,
       };
 
       var response = UrlFetchApp.fetch(request, options);
